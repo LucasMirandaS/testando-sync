@@ -6,7 +6,7 @@ import {
   Inject, Page, Sort, Filter, Group,
 } from '@syncfusion/ej2-react-grids';
 import { data } from "./datasource";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 
 type Fields = keyof typeof data[number]
@@ -42,7 +42,7 @@ export default function DataGrid() {
   const [columns, setColumns] = useState<(ColumnDirective['props'] & { field: Fields })[]>(initialColumns);
   const [openColumnSelector, setOpenColumnSelector] = useState<boolean>(false);
 
-  const handleColumn = (e: MouseEvent, c: (ColumnDirective['props'] & { field: Fields })) => {
+  const handleColumn = (e: any, c: (ColumnDirective['props'] & { field: Fields })) => {
     e.preventDefault()
     if (columns.find(col => col.field === c.field)) {
       setColumns(columns.filter(col => col.field !== c.field));
@@ -64,9 +64,9 @@ export default function DataGrid() {
               {
                 initialColumns.map(c => (
                   <DropdownMenuCheckboxItem
+                    key={c.field}
                     checked={columns.some(col => col.field === c.field)}
                     onClick={(e) => {
-                      // @ts-ignore
                       handleColumn(e, c)
                     }}
                   >
@@ -92,7 +92,7 @@ export default function DataGrid() {
           <ColumnsDirective>
             {
               columns.map(c => (
-                <ColumnDirective {...c} />
+                <ColumnDirective {...c} key={c.field} />
               ))
             }
           </ColumnsDirective>
