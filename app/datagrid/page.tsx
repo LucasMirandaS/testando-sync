@@ -79,11 +79,10 @@ export default function DataGrid() {
   }
 
   const exportSettings = () => {
-    const columns = gridRef?.current?.columns as CustomColumn[]
-    const coumnsField = columns.map(column => column.field)
+    const columnsSettings = gridRef?.current?.getColumns()
     // @ts-expect-error adicionado para permitir recuperação de atributo privado da instância da grid
     const reorder = gridRef?.current?.sortedColumns as string[]
-    console.log({ coumnsField, reorder })
+    console.log({ columnsSettings, reorder })
   }
 
   return (
