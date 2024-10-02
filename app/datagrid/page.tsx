@@ -68,21 +68,18 @@ export default function DataGrid() {
     e.preventDefault()
     if (columns.find(col => col.field === c.field)) {
       setColumns(columns.filter(col => col.field !== c.field));
+      gridRef?.current?.hideColumns([c.field])
     } else {
       const newColumns = [...initialColumns.filter(col => columns.some(c2 => c2.field === col.field) || col.field === c.field)];
       setColumns(newColumns)
+      gridRef?.current?.showColumns([c.field])
     }
-  }
-
-  const handleChange = (e: any) => {
-    console.log(e)
   }
 
   const exportSettings = () => {
     const columnsSettings = gridRef?.current?.getColumns()
-    // @ts-expect-error adicionado para permitir recuperação de atributo privado da instância da grid
-    const reorder = gridRef?.current?.sortedColumns as string[]
-    console.log({ columnsSettings, reorder })
+    const frozenColumns = gridRef?.current?.getFrozenColumns()
+    console.log({ columnsSettings, frozenColumns })
   }
 
   return (
@@ -127,12 +124,11 @@ export default function DataGrid() {
           filterSettings={filterSettings}
           height={180}
           autoFit={true}
-          actionComplete={handleChange}
           ref={gridRef}
         >
           <ColumnsDirective>
             {
-              columns.map(c => (
+              initialColumns.map(c => (
                 <ColumnDirective {...c} key={c.field} />
               ))
             }
